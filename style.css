@@ -1,0 +1,118 @@
+/* styles.css mejorado */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+}
+
+.container {
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95rem;
+    user-select: none;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+input.error {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 6px rgba(231, 76, 60, 0.6);
+}
+
+.error-msg {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    min-height: 20px;
+    margin-top: 0.3rem;
+    font-weight: 600;
+    user-select: none;
+}
+
+button {
+    width: 100%;
+    padding: 0.85rem 0;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+button:hover,
+button:focus {
+    background-color: #0056b3;
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 86, 179, 0.6);
+}
+
+button:active {
+    transform: scale(0.98);
+    box-shadow: none;
+}
+
+@media (max-width: 450px) {
+    .container {
+        padding: 2rem 1.5rem;
+        max-width: 100%;
+    }
+}
