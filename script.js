@@ -1,55 +1,103 @@
-// script.js
-document.getElementById('registroForm').addEventListener('submit', function(e) {
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('registrationForm');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+  const submitBtn = document.getElementById('submitBtn');
+  const successMessage = document.getElementById('successMessage');
+
+  const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+  let isValid = { name: false, email: false, password: false, confirmPassword: false };
+
+  nameInput.addEventListener('input', () => { validateName(); updateSubmitButton(); });
+  emailInput.addEventListener('input', () => { validateEmail(); updateSubmitButton(); });
+  passwordInput.addEventListener('input', () => { validatePassword(); validateConfirmPassword(); updateSubmitButton(); });
+  confirmPasswordInput.addEventListener('input', () => { validateConfirmPassword(); updateSubmitButton(); });
+
+  function validateName() {
+    const error = document.getElementById('nameError');
+    if (!nameRegex.test(nameInput.value.trim())) {
+      nameInput.classList.add('input-error');
+      error.classList.add('error-visible');
+      isValid.name = false;
+    } else {
+      nameInput.classList.remove('input-error');
+      error.classList.remove('error-visible');
+      isValid.name = true;
+    }
+  }
+
+  function validateEmail() {
+    const error = document.getElementById('emailError');
+    if (!emailRegex.test(emailInput.value.trim())) {
+      emailInput.classList.add('input-error');
+      error.classList.add('error-visible');
+      isValid.email = false;
+    } else {
+      emailInput.classList.remove('input-error');
+      error.classList.remove('error-visible');
+      isValid.email = true;
+    }
+  }
+
+  function validatePassword() {
+    const error = document.getElementById('passwordError');
+    if (!passwordRegex.test(passwordInput.value)) {
+      passwordInput.classList.add('input-error');
+      error.classList.add('error-visible');
+      isValid.password = false;
+    } else {
+      passwordInput.classList.remove('input-error');
+      error.classList.remove('error-visible');
+      isValid.password = true;
+    }
+  }
+
+  function validateConfirmPassword() {
+    const error = document.getElementById('confirmPasswordError');
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      confirmPasswordInput.classList.add('input-error');
+      error.classList.add('error-visible');
+      isValid.confirmPassword = false;
+    } else {
+      confirmPasswordInput.classList.remove('input-error');
+      error.classList.remove('error-visible');
+      isValid.confirmPassword = true;
+    }
+  }
+
+  function updateSubmitButton() {
+    submitBtn.disabled = !Object.values(isValid).every(v => v === true);
+  }
+
+  form.addEventListener('submit', e => {
     e.preventDefault();
+    validateName();
+    validateEmail();
+    validatePassword();
+    validateConfirmPassword();
 
-    const nombre = document.getElementById('nombre');
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('confirmPassword');
+    if (Object.values(isValid).every(v => v === true)) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creando cuenta...';
 
-    let isValid = true;
+      setTimeout(() => {
+        successMessage.classList.add('success-visible');
+        form.reset();
+        submitBtn.textContent = 'Cuenta creada';
 
-    // Reset mensajes de error
-    document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
-
-    // Validar nombre
-    if (nombre.value.trim() === '') {
-        setError(nombre, 'El nombre es obligatorio.');
-        isValid = false;
+        setTimeout(() => {
+          successMessage.classList.remove('success-visible');
+          submitBtn.textContent = 'Crear cuenta';
+          updateSubmitButton();
+        }, 3000);
+      }, 1000);
     }
+  });
 
-    // Validar email con regex simple
-    if (!validateEmail(email.value.trim())) {
-        setError(email, 'Introduce un correo válido.');
-        isValid = false;
-    }
-
-    // Validar contraseña (mínimo 6 caracteres)
-    if (password.value.length < 6) {
-        setError(password, 'La contraseña debe tener al menos 6 caracteres.');
-        isValid = false;
-    }
-
-    // Confirmar contraseña
-    if (password.value !== confirmPassword.value) {
-        setError(confirmPassword, 'Las contraseñas no coinciden.');
-        isValid = false;
-    }
-
-    if (isValid) {
-        alert('Registro exitoso!');
-        this.reset();
-    }
+  updateSubmitButton();
 });
-
-function setError(input, message) {
-    const formGroup = input.parentElement;
-    const errorMsg = formGroup.querySelector('.error-msg');
-    errorMsg.textContent = message;
-}
-
-function validateEmail(email) {
-    // Regex simple para validar correo electrónico
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email.toLowerCase());
-}
